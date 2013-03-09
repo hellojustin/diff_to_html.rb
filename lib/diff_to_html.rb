@@ -5,7 +5,7 @@ class DiffToHtml
   attr_accessor :file_prefix
 
   def ln_cell(ln, side = nil)
-    "<td class = 'ln' style='width:25px; padding:3px; background-color:#ddd; border-top:1px solid #bbb; border-right:1px solid #bbb; text-align:right; color:#999; whitespace:pre'>#{ln}</td>"
+    "<td class = 'ln' style='width:25px; padding:3px; background-color:#ddd; border-top:1px solid #bbb; border-right:1px solid #bbb; text-align:right; color:#999; white-space:pre'>#{ln}</td>"
   end
 
   #
