@@ -5,7 +5,7 @@ class DiffToHtml
   attr_accessor :file_prefix
 
   def ln_cell(ln, side = nil)
-    "<td class = 'ln' style='width:25px; padding:3px; background-color:#ddd; border-top:1px solid #bbb; border-right:1px solid #bbb; text-align:right; color:#999;'>#{ln}</td>"
+    "<td class = 'ln' style='width:25px; padding:3px; background-color:#ddd; border-top:1px solid #bbb; border-right:1px solid #bbb; text-align:right; font-family:monospace; color:#999;'>#{ln}</td>"
   end
 
   #
@@ -29,13 +29,13 @@ class DiffToHtml
           x += ln_cell(right_ln, 'r')
           right_ln += 1
         end
-        x += "<td style='padding:3px; text-align:right; #{removed_styles}'>#{'-' unless removed_styles.empty?}</td><td style='padding:3px 10px; text-align:left; white-space:pre; #{removed_styles}'>#{line}</td></tr>"
+        x += "<td style='padding:3px; text-align:right; font-family:monospace; #{removed_styles}'>#{'-' unless removed_styles.empty?}</td><td style='padding:3px 10px; text-align:left; font-family:monospace; white-space:pre; #{removed_styles}'>#{line}</td></tr>"
         left_ln += 1
         x
       end
       if modified
         result << @right.map do |line| 
-          x = "<tr>#{ln_cell(nil)}#{ln_cell(right_ln, 'r')}<td style='padding:3px; text-align:right; #{added_styles}'>#{'+' unless added_styles.empty?}</td><td style='padding:3px 10px; text-align:left; white-space:pre; #{added_styles}'>#{line}</td></tr>"
+          x = "<tr>#{ln_cell(nil)}#{ln_cell(right_ln, 'r')}<td style='padding:3px; text-align:right; font-family:monospace; #{added_styles}'>#{'+' unless added_styles.empty?}</td><td style='padding:3px 10px; text-align:left; font-family:monospace; white-space:pre; #{added_styles}'>#{line}</td></tr>"
           right_ln += 1
           x
         end
@@ -57,7 +57,7 @@ class DiffToHtml
 
   def begin_file(file)
     result = <<EOF 
-<li style="background-color:#eee; padding:2px; border:1px solid #ddd; border-radius:6px;"><h3 style="margin:5px; font-size:14px; font-weight:normal; line-height:20px;">#{file}</h3><table cellspacing=0 style="width:100%; font-size:12px; font-family:'lucida console', 'courier new', monospace; border:1px solid #bbb; border-radius:4px; border-collapse:separate; padding:0; background-color:#fff;">
+<li style="background-color:#eee; padding:2px; border:1px solid #ddd; border-radius:6px;"><h3 style="margin:5px; font-size:14px; font-weight:normal; line-height:20px;">#{file}</h3><table cellspacing=0 style="width:100%; font-size:12px; font-family:monospace; border:1px solid #bbb; border-radius:4px; border-collapse:separate; padding:0; background-color:#fff;">
 EOF
   result
   end
