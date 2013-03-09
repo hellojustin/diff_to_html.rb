@@ -57,7 +57,7 @@ class DiffToHtml
 
   def begin_file(file)
     result = <<EOF 
-<li style="background-color:#eee; padding:2px; border:1px solid #ddd; border-radius:6px;"><h3 style="margin:5px; font-size:14px; font-weight:normal; line-height:20px;">#{file}</h3><table cellspacing=0 style="width:100%; font-size:12px; font-family:monospace; border:1px solid #bbb; border-radius:4px; border-collapse:separate; padding:0; background-color:#fff;">
+<li style="background-color:#eee; padding:2px; margin-bottom:10px; border:1px solid #ddd; border-radius:6px;"><h3 style="margin:5px; font-size:14px; font-weight:normal; line-height:20px;">#{file}</h3><table cellspacing=0 style="width:100%; font-size:12px; font-family:monospace; border:1px solid #bbb; border-radius:4px; border-collapse:separate; padding:0; background-color:#fff;">
 EOF
   result
   end
