@@ -5,13 +5,7 @@ class DiffToHtml
   attr_accessor :file_prefix
 
   def ln_cell(ln, side = nil)
-    anchor = "f#{@filenum}#{side}#{ln}"
-    result = "<td class = 'ln'>"
-    result += "<a name='#{anchor}' href='##{anchor}'>" if ln
-    result += "#{ln}"
-    result += "</a>" if ln
-    result += "</td>"
-    result
+    "<td class = 'ln' style='width:25px; padding:3px; background-color:#ddd; border-top:1px solid #bbb; border-right:1px solid #bbb; text-align:right; color:#999; whitespace:pre'>#{ln}</td>"
   end
 
   #
@@ -22,38 +16,36 @@ class DiffToHtml
     if @left.length > 0 or @right.length > 0
       modified = (@last_op != ' ')
       if modified
-        left_class = " class='r'"
-        right_class = " class='a'"
-        result << "<tbody class='mod'>"
+        removed_styles = " background-color:#fdd;"
+        added_styles   = " background-color:#dfd;"
       else
-        left_class = right_class = ''
+        removed_styles = added_styles = ''
       end
       result << @left.map do |line| 
-        x = "<tr#{left_class}>#{ln_cell(left_ln, 'l')}"
+        x = "<tr>#{ln_cell(left_ln, 'l')}"
         if modified
           x += ln_cell(nil)
         else
           x += ln_cell(right_ln, 'r')
           right_ln += 1
         end
-        x += "<td>#{line}</td></tr>"
+        x += "<td style='padding:3px; text-align:right; #{removed_styles}'>#{'-' unless removed_styles.empty?}</td><td style='padding:3px 10px; text-align:left; #{removed_styles}'>#{line}</td></tr>"
         left_ln += 1
         x
       end
       if modified
         result << @right.map do |line| 
-          x = "<tr#{right_class}>#{ln_cell(nil)}#{ln_cell(right_ln, 'r')}<td>#{line}</td></tr>"
+          x = "<tr>#{ln_cell(nil)}#{ln_cell(right_ln, 'r')}<td style='padding:3px; text-align:right; #{added_styles}'>#{'+' unless added_styles.empty?}</td><td style='padding:3px 10px; text-align:left; #{added_styles}'>#{line}</td></tr>"
           right_ln += 1
           x
         end
-        result << "</tbody>"
       end
     end
     return result.join("\n"), left_ln, right_ln
   end
 
   def range_row(range)
-    "<tr class='range'><td>...</td><td>...</td><td>#{range}</td></tr>"
+    "<tr class='range'><td colspan=4 style='padding:3px; background-color:rgb(234,242,245); color:#999;'>... #{range}</td></tr>"
   end
 
   def range_info(range)
@@ -65,12 +57,7 @@ class DiffToHtml
 
   def begin_file(file)
     result = <<EOF 
-<li><h2><a name="F#{@filenum}" href="#F#{@filenum}">#{file}</a></h2><table class='diff'>
-<colgroup>
-<col class="lineno"/>
-<col class="lineno"/>
-<col class="content"/>
-</colgroup>
+<li style="background-color:#eee; padding:2px; border:1px solid #ddd; border-radius:6px;"><h3 style="margin:5px; font-size:14px; font-weight:normal; line-height:20px;">#{file}</h3><table cellspacing=0 style="width:100%; font-size:12px; font-family:'lucida console', 'courier new', monospace; border:1px solid #bbb; border-radius:4px; border-collapse:separate; padding:0; background-color:#fff;">
 EOF
   result
   end
@@ -144,7 +131,7 @@ EOF
       result << "</table></li>"      
     else
       #"<div class='error'>#{header_old}</div>"
-      result =%Q{<li><h2><a name="F#{@filenum}" href="#F#{@filenum}">#{file_name}</a></h2>#{header_old}</li>}
+      result =%Q{<li style="background-color:#eee; padding:2px; border:1px solid #ddd; border-radius:6px;"><h3 style="margin:5px; font-size:14px; font-weight:normal;">#{file_name}</h3>#{header_old}</li>}
     end
 
     result
@@ -156,7 +143,7 @@ EOF
   
   def get_diffs(composite_diff)
     pattern = file_header_pattern
-    files = composite_diff.split(pattern)
+    files   = composite_diff.split(pattern)
     headers = composite_diff.scan(pattern) #huh can't find a way to get both at once
     files.shift if files[0] == '' #first one is junk usually
     result = []
@@ -169,7 +156,7 @@ EOF
   end
 
   def diffs_to_html(diffs)
-    result = '<ul class="diff">'
+    result = '<ul style="margin:0; padding:0; list-style:none;">'
     @filenum = 0
     diffs.each do |file_map|
       result << get_single_file_diff(file_map[:filename], file_map[:file])
