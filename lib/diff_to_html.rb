@@ -96,7 +96,7 @@ EOF
       diff.each do |line|
         op = line[0,1]
         line = line[1..-1] || ''
-        if op == '\\'
+        if op == '\\' or op == ''
           line = op + line
           op = ' '
         end
