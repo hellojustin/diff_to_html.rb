@@ -121,19 +121,18 @@ EOF
           result << range_row(range)
         else
           flush_changes(result, left_ln, right_ln)
-          result << "</table></li>"
           break
         end
         @last_op = op
       end
 
       flush_changes(result, left_ln, right_ln)
-      result << "</table></li>"      
     else
       #"<div class='error'>#{header_old}</div>"
       result =%Q{<li style="background-color:#eee; padding:2px; border:1px solid #ddd; border-radius:6px;"><h3 style="margin:5px; font-size:14px; font-weight:normal;">#{file_name}</h3>#{header_old}</li>}
     end
 
+    result << "</table></li>"      
     result
   end
 
